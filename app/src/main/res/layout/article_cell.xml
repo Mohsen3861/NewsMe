@@ -60,8 +60,8 @@
                 android:layout_above="@+id/imageView_share" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/imageView_share"
                 android:src="@android:drawable/ic_menu_share"
                 android:layout_alignParentBottom="true"
@@ -70,10 +70,10 @@
                 android:layout_marginTop="5dp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/imageView_favorit"
-                android:src="@android:drawable/btn_star_big_off"
+                android:src="@drawable/heart_outline"
                 android:layout_alignParentBottom="true"
                 android:layout_toLeftOf="@+id/imageView_share"
                 android:layout_toStartOf="@+id/imageView_share"

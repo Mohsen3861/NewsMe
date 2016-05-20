@@ -46,7 +46,7 @@ public class ArticleAdapter extends BaseAdapter{
     }
 
     @Override
-    public Object getItem(int position) {
+    public Article getItem(int position) {
         return mData.get(position);
     }
 

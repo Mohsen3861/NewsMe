@@ -2,12 +2,13 @@ package com.esgi.newsme.newsme.Models;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by mohsen raeisi on 14/05/2016.
  */
-public class Article {
+public class Article implements Serializable{
 
     private String title;
     private String description;
