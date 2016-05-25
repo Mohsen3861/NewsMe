@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_lemonde"
+            android:icon="@drawable/ic_lemond"
+            android:title="Le monde" />
+        <item
+            android:id="@+id/nav_bfm"
+            android:icon="@drawable/ic_bfm_t"
+            android:title="BFM" />
+
+        <item
+            android:id="@+id/nav_01net"
+            android:icon="@drawable/ic_01net"
+            android:title="01 NET" />
+
+        <item
+            android:id="@+id/nav_all"
+            android:icon="@drawable/arrow_compress_all"
+            android:title="tous" />
+
+
+
+    </group>
+<!--
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Partager" />
+        </menu>
+    </item>
+-->
+</menu>

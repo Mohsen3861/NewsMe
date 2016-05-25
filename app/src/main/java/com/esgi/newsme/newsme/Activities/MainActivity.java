@@ -1,78 +1,101 @@
 package com.esgi.newsme.newsme.Activities;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
-import com.esgi.newsme.newsme.Models.Article;
+import com.esgi.newsme.newsme.Fragments.HomeFragment;
 import com.esgi.newsme.newsme.R;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-public class MainActivity extends AppCompatActivity {
-
-    ListView mainNewsList ;
-    ArticleAdapter articleAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        assignViews();
-        prepareList();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        if(savedInstanceState == null){
+            HomeFragment home = new HomeFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
+        }
+
     }
 
-    public void assignViews(){
-        mainNewsList = (ListView) findViewById(R.id.listViewMain);
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    public void prepareList(){
-        articleAdapter = new ArticleAdapter(this);
-      //  ArrayList<Article> newsList = new ArrayList<>();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main2, menu);
+        return true;
+    }
 
-        Article article = new Article();
-        article.setTitle("L’Ile-de-France adopte le principe des tests salivaires de détection de drogue dans les lycées\n");
-        article.setSource("lemonde.fr");
-        article.setDescription("Il n’est pas sûr que Grigory Rodchenkov soit un lecteur assidu de John Le Carré. L’histoire que l’ancien patron du laboratoire antidopage de Moscou a racontée aux journalistes du New York Times, publiée le 12 mai, aurait pourtant pu constituer un excellent scénario pour le spécialiste britannique des romans d’espionnage.\n"
-                );
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.image_test);
-        article.setImgUrl(R.drawable.image_test+"");
-        article.setImage(largeIcon);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        Article article2 = new Article();
-        article2.setTitle("Conflit israélo-palestinien : la conférence de Paris aura lieu le 3 juin, en présence de Kerry\n");
-        article2.setSource("lemonde.fr");
-        article2.setDescription("Ce sont peut-être les dernières images d’Adelma. Elles ont été tournées le mardi 8 mars sur l’esplanade qui borde la gare de Bruxelles-Central. Pour la Journée internationale des droits des femmes, plusieurs associations féministes s’étaient rassemblées au cœur de la capitale belge. Aux discours qui se succédaient sur une tribune de fortune");
-        Bitmap largeIcon2 = BitmapFactory.decodeResource(getResources(), R.drawable.image_test3);
-        article2.setImgUrl(R.drawable.image_test3+"");
-        article2.setImage(largeIcon2);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
-        articleAdapter.addItem(article);
-        articleAdapter.addItem(article2);
+        return super.onOptionsItemSelected(item);
+    }
 
-        mainNewsList.setAdapter(articleAdapter);
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-        mainNewsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Article article = articleAdapter.getItem(position);
+        if (id == R.id.nav_lemonde) {
+            HomeFragment home = new HomeFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
 
-                Intent intent = new Intent(MainActivity.this, articleActivity.class);
-                intent.putExtra("title" , article.getTitle());
-                intent.putExtra("desc" , article.getDescription());
-                intent.putExtra("source" , article.getSource());
-                intent.putExtra("image",article.getImgUrl());
+        } else if (id == R.id.nav_bfm) {
 
-                startActivity(intent);
 
-            }
-        });
+        } else if (id == R.id.nav_all) {
 
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

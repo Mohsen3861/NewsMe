@@ -19,10 +19,13 @@ public class Article implements Serializable{
     private String imgUrl;
     private Bitmap image;
 
+    private boolean saved;
+
 
     public Article (){}
 
-    public Article(String title, String description, Date dateCreation, Date dateArticle, String url, String imgUrl, Bitmap image) {
+    public Article(String title, String description, Date dateCreation, Date dateArticle, String url, String imgUrl, Bitmap image,boolean
+                   saved) {
         this.title = title;
         this.description = description;
         this.dateCreation = dateCreation;
@@ -30,6 +33,15 @@ public class Article implements Serializable{
         this.url = url;
         this.imgUrl = imgUrl;
         this.image = image;
+        this.saved = saved;
+    }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
 
     public String getTitle() {
