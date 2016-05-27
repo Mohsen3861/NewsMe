@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by mohsen raeisi on 14/05/2016.
  */
-public class Article implements Serializable{
+public class Article implements Serializable ,Comparable<Article>{
 
     private String title;
     private String description;
@@ -106,5 +106,10 @@ public class Article implements Serializable{
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    @Override
+    public int compareTo(Article another) {
+         return getDateArticle().compareTo(another.getDateArticle());
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.squareup.picasso.Picasso;
 
 public class articleActivity extends AppCompatActivity {
 
@@ -45,13 +47,12 @@ public class articleActivity extends AppCompatActivity {
         article.setTitle(intent.getStringExtra("title"));
         article.setDescription(intent.getStringExtra("desc"));
         article.setSource(intent.getStringExtra("source"));
+        article.setImgUrl(intent.getStringExtra("image"));
 
-        int imageId =Integer.parseInt(intent.getStringExtra("image"));
-        Bitmap img = BitmapFactory.decodeResource(getResources(), imageId);
+        Log.e("article image" , article.getImgUrl());
+        Picasso.with(articleActivity.this).load(article.getImgUrl()).into(image);
 
-        article.setImage(img);
-
-        image.setImageBitmap(article.getImage());
+       // image.setImageBitmap(article.getImage());
         titleTextView.setText(article.getTitle());
         descTextView.setText(article.getDescription());
         sourceTextView.setText(article.getSource());

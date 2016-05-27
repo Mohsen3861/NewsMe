@@ -14,8 +14,11 @@ import android.widget.Toast;
 import com.esgi.newsme.newsme.Activities.articleActivity;
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,8 +41,13 @@ public class ArticleAdapter extends BaseAdapter{
     }
 
     public void addItemsCollection(List<Article> elements){
-        mData.clear();
+       // mData.clear();
         mData.addAll(elements);
+
+        if(mData.size()>0)
+        Collections.sort(mData);
+
+
         notifyDataSetChanged();
 
     }
@@ -72,18 +80,16 @@ public class ArticleAdapter extends BaseAdapter{
             holder.shareButton = (ImageView) convertView.findViewById(R.id.imageView_share);
             holder.favoritButton = (ImageView) convertView.findViewById(R.id.imageView_favorit);
 
-
-
             convertView.setTag(holder);
         }else{
             holder = (ArticleViewHolder) convertView.getTag();
         }
         holder.title.setText(mData.get(position).getTitle());
         holder.source.setText(mData.get(position).getSource());
-        holder.image.setImageBitmap(mData.get(position).getImage());
+       // holder.image.setImageBitmap(mData.get(position).getImage());
+        Picasso.with(context).load(mData.get(position).getImgUrl()).into(holder.image);
 
        final Article currentArticle = mData.get(position);
-
         final ArticleViewHolder finalHolder = holder;
 
         holder.favoritButton.setOnClickListener(new View.OnClickListener() {

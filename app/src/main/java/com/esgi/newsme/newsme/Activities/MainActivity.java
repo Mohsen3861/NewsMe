@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity
 
         if(savedInstanceState == null){
             HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 0);
+            home.setArguments(bundle);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, home).commit();
@@ -82,16 +85,45 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_lemonde) {
             HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 0);
+            home.setArguments(bundle);
+
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, home).commit();
 
         } else if (id == R.id.nav_bfm) {
 
+            HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 1);
+            home.setArguments(bundle);
 
-        } else if (id == R.id.nav_all) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
 
+        } else if (id == R.id.nav_01net) {
 
+            HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 2);
+            home.setArguments(bundle);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
+
+        }else if(id == R.id.nav_all){
+            HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 3);
+            home.setArguments(bundle);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

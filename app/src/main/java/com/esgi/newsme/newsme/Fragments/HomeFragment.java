@@ -16,6 +16,12 @@ import com.esgi.newsme.newsme.Activities.articleActivity;
 import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.Xml.BfmRss;
+import com.esgi.newsme.newsme.Xml.ReadRss;
+import com.esgi.newsme.newsme.Xml.Rss01net;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -26,8 +32,10 @@ public class HomeFragment extends Fragment {
     ListView mainNewsList ;
     ArticleAdapter articleAdapter;
     private SwipeRefreshLayout swipeContainer;
+    int source;
 
     public HomeFragment(){}
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +77,7 @@ public class HomeFragment extends Fragment {
     public void prepareList(){
         articleAdapter = new ArticleAdapter(getActivity());
         //  ArrayList<Article> newsList = new ArrayList<>();
-
+/*
         Article article = new Article();
         article.setTitle("L’Ile-de-France adopte le principe des tests salivaires de détection de drogue dans les lycées\n");
         article.setSource("lemonde.fr");
@@ -89,9 +97,39 @@ public class HomeFragment extends Fragment {
         article2.setImage(largeIcon2);
 
         article2.setSaved(false);
+*/
 
-        articleAdapter.addItem(article);
-        articleAdapter.addItem(article2);
+        Bundle bundle = getArguments();
+        int source = bundle.getInt("source");
+        ReadRss readRss = new ReadRss(getActivity(),articleAdapter);
+        BfmRss bfmRss = new BfmRss(getActivity(), articleAdapter );
+        Rss01net rss01net = new Rss01net(getActivity(), articleAdapter);
+
+        switch (source){
+            case 0 :
+                readRss.execute();
+                break;
+            case 1 :
+                bfmRss.execute();
+                break;
+            case 2 :
+                rss01net.execute();
+                break;
+            case 3 :
+                readRss.execute();
+                bfmRss.execute();
+                rss01net.execute();
+                break;
+
+        }
+/*
+
+
+
+
+*/
+
+
 
         mainNewsList.setAdapter(articleAdapter);
 
