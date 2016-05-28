@@ -110,6 +110,6 @@ public class Article implements Serializable ,Comparable<Article>{
 
     @Override
     public int compareTo(Article another) {
-         return getDateArticle().compareTo(another.getDateArticle());
+         return (getDateArticle().compareTo(another.getDateArticle()));
     }
 }

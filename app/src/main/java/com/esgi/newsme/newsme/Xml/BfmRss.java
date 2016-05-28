@@ -41,11 +41,12 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
     ArrayList<Article> articles = new ArrayList<>();
     ArticleAdapter articleAdapter;
 
+    Boolean shouldLoad;
 
-    public BfmRss(Context context ,  ArticleAdapter adapter){
+    public BfmRss(Context context ,  ArticleAdapter adapter , Boolean shouldLoad){
         this.context = context;
         articleAdapter = adapter;
-
+        this.shouldLoad = shouldLoad;
     }
 
     @Override
@@ -95,7 +96,7 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
                         }
 
                     }
-                    article.setSource("BFM");
+                    article.setSource(context.getString(R.string.BFM));
 
                     if(article.getImgUrl() != null && !article.getImgUrl().equals("") &&
                             article.getDescription() != null && !article.getDescription().equals("") )
@@ -149,6 +150,10 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         articleAdapter.addItemsCollection(articles);
+
+        if(shouldLoad)
+            articleAdapter.notifyDataSetChanged();
+
         super.onPostExecute(aVoid);
     }
 }

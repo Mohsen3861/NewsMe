@@ -39,9 +39,11 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
     URL url;
     ArrayList<Article> articles = new ArrayList<>();
     ArticleAdapter articleAdapter;
-    public ReadRss(Context context , ArticleAdapter adapter){
+    Boolean shouldLoad;
+    public ReadRss(Context context , ArticleAdapter adapter , boolean shouldLoad){
         this.context = context;
         articleAdapter = adapter;
+        this.shouldLoad = shouldLoad;
     }
 
     @Override
@@ -78,6 +80,12 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
                             DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
                             Date date = formatter.parse(left);
                             article.setDateArticle(date);
+
+/*
+
+                            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                            Log.e("date" , "Time: " + format.format(date) + " original: " +dateString);
+*/
                         }else if (current.getNodeName().equalsIgnoreCase("guid")){
                             article.setUrl(current.getTextContent());
                         }else if (current.getNodeName().equalsIgnoreCase("enclosure")){
@@ -86,7 +94,7 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
                         }
                         //Log.e("channel", "items :" +article.getDateArticle());
                     }
-                    article.setSource("Le monde");
+                    article.setSource(context.getString(R.string.lemonde));
 
                     if(article.getImgUrl() != null && !article.getImgUrl().equals("") &&
                             article.getDescription() != null && !article.getDescription().equals("") )
@@ -140,6 +148,10 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         articleAdapter.addItemsCollection(articles);
+
+        if(shouldLoad)
+        articleAdapter.notifyDataSetChanged();
+
         super.onPostExecute(aVoid);
     }
 }

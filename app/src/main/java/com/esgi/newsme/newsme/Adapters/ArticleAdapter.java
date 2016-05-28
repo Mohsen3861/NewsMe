@@ -2,10 +2,12 @@ package com.esgi.newsme.newsme.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,11 +16,12 @@ import android.widget.Toast;
 import com.esgi.newsme.newsme.Activities.articleActivity;
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.Utils.DateUtils;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -29,6 +32,7 @@ public class ArticleAdapter extends BaseAdapter{
     private List<Article> mData = new ArrayList<>();
     private LayoutInflater mInflater;
     private Context context;
+    private int lastPosition = 0;
 
     public ArticleAdapter (Context context){
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,10 +49,7 @@ public class ArticleAdapter extends BaseAdapter{
         mData.addAll(elements);
 
         if(mData.size()>0)
-        Collections.sort(mData);
-
-
-        notifyDataSetChanged();
+        Collections.sort(mData,Collections.reverseOrder());
 
     }
 
@@ -70,6 +71,7 @@ public class ArticleAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ArticleViewHolder holder = null;
+        final Article currentItem = mData.get(position);
         if( convertView == null){
             convertView = mInflater.inflate(R.layout.article_cell,null);
 
@@ -77,19 +79,42 @@ public class ArticleAdapter extends BaseAdapter{
             holder.title = (TextView) convertView.findViewById(R.id.textView_title);
             holder.source = (TextView) convertView.findViewById(R.id.textView_source);
             holder.image = (ImageView) convertView.findViewById(R.id.imageView_article);
+            holder.dateTextView = (TextView) convertView.findViewById(R.id.textView_date) ;
             holder.shareButton = (ImageView) convertView.findViewById(R.id.imageView_share);
             holder.favoritButton = (ImageView) convertView.findViewById(R.id.imageView_favorit);
+            holder.sourceImage = (ImageView) convertView.findViewById(R.id.source_image_article_page);
 
             convertView.setTag(holder);
         }else{
             holder = (ArticleViewHolder) convertView.getTag();
         }
-        holder.title.setText(mData.get(position).getTitle());
-        holder.source.setText(mData.get(position).getSource());
-       // holder.image.setImageBitmap(mData.get(position).getImage());
-        Picasso.with(context).load(mData.get(position).getImgUrl()).into(holder.image);
+        holder.title.setText(currentItem.getTitle());
 
-       final Article currentArticle = mData.get(position);
+        String source = "• " +currentItem.getSource();
+        holder.source.setText(source);
+        Picasso.with(context).load(currentItem.getImgUrl()).into(holder.image);
+
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+       // holder.dateTextView.setText( format.format(mData.get(position).getDateArticle()));
+
+        //la date
+        holder.dateTextView.setText(DateUtils.getTimeAgo(currentItem.getDateArticle().getTime(),context));
+
+        //icon de source
+        switch (currentItem.getSource()){
+            case "BFM":
+                holder.sourceImage.setImageResource(R.drawable.ic_bfm);
+                break;
+            case "Le monde":
+                holder.sourceImage.setImageResource(R.drawable.ic_lemond);
+
+                break;
+            case "01-NET":
+                holder.sourceImage.setImageResource(R.drawable.ic_01net_logo);
+                break;
+        }
+
+        final Article currentArticle = mData.get(position);
         final ArticleViewHolder finalHolder = holder;
 
         holder.favoritButton.setOnClickListener(new View.OnClickListener() {
@@ -114,27 +139,28 @@ public class ArticleAdapter extends BaseAdapter{
         holder.shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   Toast.makeText(context,"share Clicked at : "+ position,Toast.LENGTH_SHORT).show();
 
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = mData.get(position).getDescription() ;
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mData.get(position).getTitle());
+                String shareBody = currentItem.getTitle() + " " + currentItem.getUrl() ;
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, currentItem.getTitle());
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                context.startActivity(Intent.createChooser(sharingIntent, mData.get(position).getTitle()));
+                context.startActivity(Intent.createChooser(sharingIntent, currentItem.getTitle()));
             }
         });
 
         holder.title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Article article = mData.get(position);
+
 
                 Intent intent = new Intent(context, articleActivity.class);
-                intent.putExtra("title" , article.getTitle());
-                intent.putExtra("desc" , article.getDescription());
-                intent.putExtra("source" , article.getSource());
-                intent.putExtra("image",article.getImgUrl());
+                intent.putExtra("title" , currentItem.getTitle());
+                intent.putExtra("desc" , currentItem.getDescription());
+                intent.putExtra("source" , currentItem.getSource());
+                intent.putExtra("image",currentItem.getImgUrl());
+                intent.putExtra("url",currentItem.getUrl());
+                intent.putExtra("date" , currentItem.getDateArticle().getTime());
 
                 context.startActivity(intent);
             }
@@ -143,17 +169,25 @@ public class ArticleAdapter extends BaseAdapter{
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Article article = mData.get(position);
 
                 Intent intent = new Intent(context, articleActivity.class);
-                intent.putExtra("title" , article.getTitle());
-                intent.putExtra("desc" , article.getDescription());
-                intent.putExtra("source" , article.getSource());
-                intent.putExtra("image",article.getImgUrl());
+                intent.putExtra("title" , currentItem.getTitle());
+                intent.putExtra("desc" , currentItem.getDescription());
+                intent.putExtra("source" , currentItem.getSource());
+                intent.putExtra("image",currentItem.getImgUrl());
+                intent.putExtra("url",currentItem.getUrl());
+                intent.putExtra("date" , currentItem.getDateArticle().getTime());
 
                 context.startActivity(intent);
             }
         });
+
+
+        //animation
+
+        Animation animation = AnimationUtils.loadAnimation(context, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
+        convertView.startAnimation(animation);
+        lastPosition = position;
 
         return convertView;
     }
@@ -164,5 +198,7 @@ public class ArticleAdapter extends BaseAdapter{
         public ImageView image;
         public ImageView favoritButton;
         public ImageView shareButton;
+        public TextView dateTextView;
+        public ImageView sourceImage;
     }
 }

@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.Utils.DateUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.Date;
 
 public class articleActivity extends AppCompatActivity {
 
@@ -23,6 +26,8 @@ public class articleActivity extends AppCompatActivity {
     TextView descTextView;
     FloatingActionButton fabShareButton;
     TextView sourceTextView;
+    ImageView sourceImage;
+    TextView articleDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +43,23 @@ public class articleActivity extends AppCompatActivity {
         titleTextView = (TextView) findViewById(R.id.title_article_page);
         descTextView= (TextView) findViewById(R.id.desc_article_page);
         sourceTextView = (TextView) findViewById(R.id.source_article_page);
-        fabShareButton = (FloatingActionButton) findViewById(R.id.fab_share);
+        fabShareButton = (FloatingActionButton) findViewById(R.id.share_article_page);
+        sourceImage = (ImageView) findViewById(R.id.source_image_article_page);
+        articleDate = (TextView) findViewById(R.id.date_article_page);
     }
 
     public void prepareView(){
         Intent intent = getIntent();
-        Article article = new Article();
+        final Article article = new Article();
         article.setTitle(intent.getStringExtra("title"));
         article.setDescription(intent.getStringExtra("desc"));
         article.setSource(intent.getStringExtra("source"));
         article.setImgUrl(intent.getStringExtra("image"));
+        article.setUrl(intent.getStringExtra("url"));
+
+        Date date = new Date();
+        date.setTime(intent.getLongExtra("date",0));
+        article.setDateArticle(date);
 
         Log.e("article image" , article.getImgUrl());
         Picasso.with(articleActivity.this).load(article.getImgUrl()).into(image);
@@ -57,10 +69,35 @@ public class articleActivity extends AppCompatActivity {
         descTextView.setText(article.getDescription());
         sourceTextView.setText(article.getSource());
 
+        //icon de source
+        switch (article.getSource()){
+            case "BFM":
+                sourceImage.setImageResource(R.drawable.ic_bfm);
+                break;
+            case "Le monde":
+                sourceImage.setImageResource(R.drawable.ic_lemond);
+
+                break;
+            case "01-NET":
+                sourceImage.setImageResource(R.drawable.ic_01net_logo);
+                break;
+        }
+
+        //date
+        articleDate.setText(DateUtils.getDateText(article.getDateArticle()));
+
+
         fabShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(articleActivity.this,"fab clicked",Toast.LENGTH_SHORT).show();
+
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = article.getTitle() + " " + article.getUrl() ;
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, article.getTitle());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                articleActivity.this.startActivity(Intent.createChooser(sharingIntent, article.getTitle()));
+
             }
         });
     }

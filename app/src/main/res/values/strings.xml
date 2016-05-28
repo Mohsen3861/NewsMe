@@ -18,5 +18,9 @@
     <string name="url_lemonde">http://www.lemonde.fr/rss/une.xml</string>
     <string name="url_bfm">http://www.bfmtv.com/rss/info/flux-rss/flux-toutes-les-actualites/</string>
 
+    <string name="BFM">BFM</string>
+    <string name="net">01-NET</string>
+    <string name="lemonde">Le monde</string>
+
 
 </resources>

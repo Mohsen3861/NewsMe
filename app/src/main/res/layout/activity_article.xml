@@ -28,33 +28,69 @@
             android:id="@+id/viewC"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
+            android:layout_weight="0.67"
             android:background="#ed2424"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="25/04 . 21:45"
+                android:textColor="#fff"
+                android:fontFamily="sans-serif-light"
+                android:textSize="10sp"
+                android:id="@+id/date_article_page"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="TITLE TITLE TITLE"
                 android:textColor="#fff"
-                android:layout_weight="0.1"
+                android:layout_weight="0.25"
                 android:gravity="left|center"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="20sp"
                 android:id="@+id/title_article_page"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp" />
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="TITLE TITLE TITLE"
-                android:textColor="#bcbcbc"
-                android:layout_weight="0.6"
-                android:gravity="left|center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="10sp"
-                android:id="@+id/source_article_page" />
+                android:layout_weight="0.6">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="source"
+                    android:textColor="#fff"
+
+                    android:gravity="left|center"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="10sp"
+                    android:id="@+id/source_article_page"
+                    android:layout_toRightOf="@+id/source_image_article_page"
+                    android:layout_toEndOf="@+id/source_image_article_page"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="5dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/source_image_article_page"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_bfm" />
+
+            </RelativeLayout>
+
         </LinearLayout>
 
 
@@ -110,7 +146,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_share"
+        android:id="@+id/share_article_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

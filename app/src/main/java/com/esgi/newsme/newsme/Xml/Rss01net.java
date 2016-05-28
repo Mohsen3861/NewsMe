@@ -40,11 +40,12 @@ public class Rss01net extends AsyncTask<Void, Void, Void> {
     URL url;
     ArrayList<Article> articles = new ArrayList<>();
     ArticleAdapter articleAdapter;
+    Boolean shouldLoad;
 
-    public Rss01net(Context context ,  ArticleAdapter adapter){
+    public Rss01net(Context context ,  ArticleAdapter adapter , boolean shouldLoad){
         this.context = context;
         articleAdapter = adapter;
-
+        this.shouldLoad = shouldLoad;
 
     }
 
@@ -84,6 +85,10 @@ public class Rss01net extends AsyncTask<Void, Void, Void> {
                             Date date = formatter.parse(left);
                             article.setDateArticle(date);
 
+/*
+                            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                            Log.e("date" , "Time: " + format.format(date) + " original: " +dateString);
+*/
                         }else if (current.getNodeName().equalsIgnoreCase("guid")){
                             article.setUrl(current.getTextContent());
                         }else if (current.getNodeName().equalsIgnoreCase("enclosure")){
@@ -92,7 +97,7 @@ public class Rss01net extends AsyncTask<Void, Void, Void> {
                         }
 
                     }
-                    article.setSource("01-net");
+                    article.setSource(context.getString(R.string.net));
 
                     if(article.getImgUrl() != null && !article.getImgUrl().equals("") &&
                             article.getDescription() != null && !article.getDescription().equals("") )
@@ -147,7 +152,12 @@ public class Rss01net extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
+
         articleAdapter.addItemsCollection(articles);
-        super.onPostExecute(aVoid);
+
+        if(shouldLoad)
+            articleAdapter.notifyDataSetChanged();
+
+            super.onPostExecute(aVoid);
     }
 }

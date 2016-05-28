@@ -16,6 +16,7 @@ import com.esgi.newsme.newsme.Activities.articleActivity;
 import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.Xml.AllRss;
 import com.esgi.newsme.newsme.Xml.BfmRss;
 import com.esgi.newsme.newsme.Xml.ReadRss;
 import com.esgi.newsme.newsme.Xml.Rss01net;
@@ -76,34 +77,12 @@ public class HomeFragment extends Fragment {
 
     public void prepareList(){
         articleAdapter = new ArticleAdapter(getActivity());
-        //  ArrayList<Article> newsList = new ArrayList<>();
-/*
-        Article article = new Article();
-        article.setTitle("L’Ile-de-France adopte le principe des tests salivaires de détection de drogue dans les lycées\n");
-        article.setSource("lemonde.fr");
-        article.setDescription("Il n’est pas sûr que Grigory Rodchenkov soit un lecteur assidu de John Le Carré. L’histoire que l’ancien patron du laboratoire antidopage de Moscou a racontée aux journalistes du New York Times, publiée le 12 mai, aurait pourtant pu constituer un excellent scénario pour le spécialiste britannique des romans d’espionnage.\n"
-        );
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.image_test);
-        article.setImgUrl(R.drawable.image_test+"");
-        article.setImage(largeIcon);
-        article.setSaved(false);
-
-        Article article2 = new Article();
-        article2.setTitle("Conflit israélo-palestinien : la conférence de Paris aura lieu le 3 juin, en présence de Kerry\n");
-        article2.setSource("lemonde.fr");
-        article2.setDescription("Ce sont peut-être les dernières images d’Adelma. Elles ont été tournées le mardi 8 mars sur l’esplanade qui borde la gare de Bruxelles-Central. Pour la Journée internationale des droits des femmes, plusieurs associations féministes s’étaient rassemblées au cœur de la capitale belge. Aux discours qui se succédaient sur une tribune de fortune");
-        Bitmap largeIcon2 = BitmapFactory.decodeResource(getResources(), R.drawable.image_test3);
-        article2.setImgUrl(R.drawable.image_test3+"");
-        article2.setImage(largeIcon2);
-
-        article2.setSaved(false);
-*/
 
         Bundle bundle = getArguments();
         int source = bundle.getInt("source");
-        ReadRss readRss = new ReadRss(getActivity(),articleAdapter);
-        BfmRss bfmRss = new BfmRss(getActivity(), articleAdapter );
-        Rss01net rss01net = new Rss01net(getActivity(), articleAdapter);
+        ReadRss readRss = new ReadRss(getActivity(),articleAdapter , true);
+        BfmRss bfmRss = new BfmRss(getActivity(), articleAdapter,true );
+        Rss01net rss01net = new Rss01net(getActivity(), articleAdapter,true);
 
         switch (source){
             case 0 :
@@ -116,11 +95,11 @@ public class HomeFragment extends Fragment {
                 rss01net.execute();
                 break;
             case 3 :
-                readRss.execute();
-                bfmRss.execute();
-                rss01net.execute();
-                break;
 
+                AllRss allRss = new AllRss(articleAdapter,getActivity());
+
+                allRss.execute();
+                break;
         }
 /*
 
