@@ -2,7 +2,9 @@ package com.esgi.newsme.newsme.Utils;
 
 import android.content.Context;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -54,23 +56,13 @@ public class DateUtils {
         SimpleDateFormat formatDay = new SimpleDateFormat("dd/MM");
         SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
 
-        double time = date.getTime();
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000;
-        }
+        Date today = new Date();
 
-        long now = new Date().getTime();
-        if (time > now || time <= 0) {
-            return null;
-        }
 
-        final double diff = now - time;
-
-        if (diff < 24 * HOUR_MILLIS) {
+        if (formatDay.format(date).equals(formatDay.format(today))) {
             day = "Aujourd'hui";
         }
-        else if (diff < 48 * HOUR_MILLIS) {
+        else if (formatDay.format(date).equals(getYesterdayDateString())) {
             day = "Hier";
         }else {
             day = formatDay.format(date);
@@ -78,6 +70,13 @@ public class DateUtils {
 
         hour = formatHour.format(date);
         return day + " • " + hour;
+    }
+
+    public static String getYesterdayDateString() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return dateFormat.format(cal.getTime());
     }
 
 }

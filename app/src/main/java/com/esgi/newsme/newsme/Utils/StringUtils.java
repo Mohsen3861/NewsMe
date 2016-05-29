@@ -8,7 +8,11 @@ import android.text.Html;
 public class StringUtils {
 
     public static String html2text(String html) {
-            return Html.fromHtml(html).toString();
+        html =  html.replaceAll("s/<(.*?)>//g","");
+        html = html.replaceAll("<img.+?>", "");
+        html = html.replaceAll("[\\r\\n]+", "");
+        html = html.trim();
+        return Html.fromHtml(html).toString();
 
     }
 }

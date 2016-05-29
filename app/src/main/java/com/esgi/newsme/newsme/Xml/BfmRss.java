@@ -99,7 +99,7 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
                     article.setSource(context.getString(R.string.BFM));
 
                     if(article.getImgUrl() != null && !article.getImgUrl().equals("") &&
-                            article.getDescription() != null && !article.getDescription().equals("") )
+                            article.getDescription() != null && !article.getDescription().equals("") && !article.getDescription().equals("\n\n") )
                     articles.add(article);
                     /*
                     Log.e("title - BFMTV", article.getTitle());

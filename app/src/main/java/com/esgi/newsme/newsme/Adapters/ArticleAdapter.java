@@ -92,7 +92,7 @@ public class ArticleAdapter extends BaseAdapter{
 
         String source = "• " +currentItem.getSource();
         holder.source.setText(source);
-        Picasso.with(context).load(currentItem.getImgUrl()).into(holder.image);
+        Picasso.with(context).load(currentItem.getImgUrl()).placeholder(R.drawable.default_placeholder).into(holder.image);
 
         //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
        // holder.dateTextView.setText( format.format(mData.get(position).getDateArticle()));
