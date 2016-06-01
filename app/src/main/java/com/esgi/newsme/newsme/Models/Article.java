@@ -16,8 +16,46 @@ public class Article implements Serializable ,Comparable<Article>{
     private Date dateCreation;
     private Date dateArticle;
     private String url;
+
+    public Article(String title, String description, String guid, String enclosure, Date pubDate) {
+        this.title = title;
+        this.description = description;
+        this.guid = guid;
+        this.enclosure = enclosure;
+        this.pubDate = pubDate;
+    }
+
+    public String getGuid() {
+
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public String getEnclosure() {
+        return enclosure;
+    }
+
+    public void setEnclosure(String enclosure) {
+        this.enclosure = enclosure;
+    }
+
+    public Date getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(Date pubDate) {
+        this.pubDate = pubDate;
+    }
+
     private String imgUrl;
     private Bitmap image;
+    private String guid;
+    private String enclosure;
+    private Date pubDate;
+
 
     private boolean saved;
 
