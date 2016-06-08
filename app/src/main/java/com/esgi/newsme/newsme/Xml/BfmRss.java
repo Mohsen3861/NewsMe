@@ -8,6 +8,7 @@ import android.util.Log;
 import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.SQL.DAO.ArticleDAO;
 import com.esgi.newsme.newsme.Utils.StringUtils;
 
 import org.w3c.dom.Document;
@@ -42,11 +43,15 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
     ArticleAdapter articleAdapter;
 
     Boolean shouldLoad;
-
+    ArticleDAO articleDAO;
     public BfmRss(Context context ,  ArticleAdapter adapter , Boolean shouldLoad){
         this.context = context;
         articleAdapter = adapter;
         this.shouldLoad = shouldLoad;
+
+        articleDAO = new ArticleDAO(context);
+        articleDAO.open();
+
     }
 
     @Override
@@ -99,8 +104,12 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
                     article.setSource(context.getString(R.string.BFM));
 
                     if(article.getImgUrl() != null && !article.getImgUrl().equals("") &&
-                            article.getDescription() != null && !article.getDescription().equals("") && !article.getDescription().equals("\n\n") )
-                    articles.add(article);
+                            article.getDescription() != null && !article.getDescription().equals("") && !article.getDescription().equals("\n\n") ){
+
+                        articleDAO.add(article);
+                        articles.add(article);
+                    }
+
                     /*
                     Log.e("title - BFMTV", article.getTitle());
                     Log.e("description- BFMTV", article.getDescription());
@@ -149,10 +158,15 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
+        articles = articleDAO.getArticleBySource(context.getResources().getString(R.string.BFM));
+
         articleAdapter.addItemsCollection(articles);
+
 
         if(shouldLoad)
             articleAdapter.notifyDataSetChanged();
+
+        articleDAO.close();
 
         super.onPostExecute(aVoid);
     }

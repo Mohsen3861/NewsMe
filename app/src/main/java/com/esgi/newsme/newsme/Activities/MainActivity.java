@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, home).commit();
 
+            setTitle(R.string.lemonde);
+
         } else if (id == R.id.nav_bfm) {
 
             HomeFragment home = new HomeFragment();
@@ -82,6 +84,8 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, home).commit();
+
+            setTitle(R.string.BFM);
 
         } else if (id == R.id.nav_01net) {
 
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, home).commit();
 
+            setTitle(R.string.net);
         }else if(id == R.id.nav_all){
             HomeFragment home = new HomeFragment();
             Bundle bundle = new Bundle();
@@ -103,6 +108,21 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, home).commit();
+
+            setTitle(R.string.app_name);
+
+        }else if(id == R.id.nav_favorit){
+            HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 4);
+            home.setArguments(bundle);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
+
+            setTitle("Vos articles favoris");
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

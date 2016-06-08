@@ -16,51 +16,27 @@ public class Article implements Serializable ,Comparable<Article>{
     private Date dateCreation;
     private Date dateArticle;
     private String url;
-
-    public Article(String title, String description, String guid, String enclosure, Date pubDate) {
-        this.title = title;
-        this.description = description;
-        this.guid = guid;
-        this.enclosure = enclosure;
-        this.pubDate = pubDate;
-    }
-
-    public String getGuid() {
-
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
-    public String getEnclosure() {
-        return enclosure;
-    }
-
-    public void setEnclosure(String enclosure) {
-        this.enclosure = enclosure;
-    }
-
-    public Date getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
-    }
-
+    private String id;
     private String imgUrl;
     private Bitmap image;
-    private String guid;
-    private String enclosure;
-    private Date pubDate;
-
 
     private boolean saved;
 
+    public Article(String id, String title, String description, String url, String imgUrl, Date dateArticle, String source,Boolean saved) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.imgUrl = imgUrl;
+        this.dateArticle = dateArticle;
+        this.source = source;
+        this.saved = saved;
+    }
 
-    public Article (){}
+
+    //KEY_ID, KEY_TITLE, KEY_DESCRIPTION, KEY_URL, KEY_URL_IMAGE, KEY_DATE
+
+    public Article(){}
 
     public Article(String title, String description, Date dateCreation, Date dateArticle, String url, String imgUrl, Bitmap image,boolean
                    saved) {
@@ -72,6 +48,14 @@ public class Article implements Serializable ,Comparable<Article>{
         this.imgUrl = imgUrl;
         this.image = image;
         this.saved = saved;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public boolean isSaved() {

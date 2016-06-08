@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.esgi.newsme.newsme.Activities.articleActivity;
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.SQL.DAO.ArticleDAO;
 import com.esgi.newsme.newsme.Utils.DateUtils;
 import com.squareup.picasso.Picasso;
 
@@ -33,10 +34,13 @@ public class ArticleAdapter extends BaseAdapter{
     private LayoutInflater mInflater;
     private Context context;
     private int lastPosition = 0;
+    private ArticleDAO articleDAO;
 
     public ArticleAdapter (Context context){
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
+    this.articleDAO = new ArticleDAO(context);
+        this.articleDAO.open();
     }
 
     public void addItem( Article item) {
@@ -92,13 +96,23 @@ public class ArticleAdapter extends BaseAdapter{
 
         String source = "• " +currentItem.getSource();
         holder.source.setText(source);
+
+        //image
         Picasso.with(context).load(currentItem.getImgUrl()).placeholder(R.drawable.default_placeholder).into(holder.image);
 
         //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
        // holder.dateTextView.setText( format.format(mData.get(position).getDateArticle()));
 
+
         //la date
         holder.dateTextView.setText(DateUtils.getTimeAgo(currentItem.getDateArticle().getTime(),context));
+
+        //favorit button
+        if(currentItem.isSaved())
+            holder.favoritButton.setImageResource((R.drawable.heart));
+        else
+            holder.favoritButton.setImageResource((R.drawable.heart_outline));
+
 
         //icon de source
         switch (currentItem.getSource()){
@@ -126,12 +140,17 @@ public class ArticleAdapter extends BaseAdapter{
                     Toast.makeText(context, "l'article enregistré", Toast.LENGTH_SHORT).show();
                     // TODO code for saving article
 
+                    currentArticle.setSaved(true);
+                    articleDAO.updateArticle(currentArticle);
+
                     //end
                     mData.get(position).setSaved(true);
                 }else{
                     finalHolder.favoritButton.setImageResource(R.drawable.heart_outline);
                     mData.get(position).setSaved(false);
 
+                    currentArticle.setSaved(false);
+                    articleDAO.updateArticle(currentArticle);
                 }
             }
         });

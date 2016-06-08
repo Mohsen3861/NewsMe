@@ -1,9 +1,9 @@
-package com.esgi.newsme.newsme.DAO;
+package com.esgi.newsme.newsme.SQL.DAO;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.esgi.newsme.newsme.DataBase.DataBaseHandler;
+import com.esgi.newsme.newsme.SQL.DataBase.DataBaseHandler;
 
 /**
  * Created by Promobile on 01/06/2016.

@@ -1,6 +1,5 @@
 package com.esgi.newsme.newsme.Xml;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -24,11 +23,11 @@ public class AllRss extends AsyncTask<Void,Void,Void> {
     protected void onPreExecute() {
         BfmRss   bfmRss = new BfmRss(context,articleAdapter , false);
         Rss01net rss01net = new Rss01net(context,articleAdapter , false);
-        ReadRss  readRss = new ReadRss(context,articleAdapter , false);
+        LemondeRss lemondeRss = new LemondeRss(context,articleAdapter , false);
 
         bfmRss.execute();
         rss01net.execute();
-        readRss.execute();
+        lemondeRss.execute();
 
         super.onPreExecute();
     }

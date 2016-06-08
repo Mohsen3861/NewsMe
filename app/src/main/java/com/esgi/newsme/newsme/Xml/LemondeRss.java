@@ -8,6 +8,7 @@ import android.util.Log;
 import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
 import com.esgi.newsme.newsme.Models.Article;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.SQL.DAO.ArticleDAO;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,20 +35,28 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * Created by Promobile on 25/05/2016.
  */
-public class ReadRss extends AsyncTask<Void, Void, Void> {
+public class LemondeRss extends AsyncTask<Void, Void, Void> {
     Context context;
     URL url;
     ArrayList<Article> articles = new ArrayList<>();
     ArticleAdapter articleAdapter;
     Boolean shouldLoad;
-    public ReadRss(Context context , ArticleAdapter adapter , boolean shouldLoad){
+
+    ArticleDAO articleDAO;
+
+
+    public LemondeRss(Context context , ArticleAdapter adapter , boolean shouldLoad){
         this.context = context;
         articleAdapter = adapter;
         this.shouldLoad = shouldLoad;
+
+        articleDAO = new ArticleDAO(context);
+        articleDAO.open();
     }
 
     @Override
     protected Void doInBackground(Void... params) {
+
         try {
             ParseXMl(GetData());
         } catch (ParseException e) {
@@ -97,20 +106,15 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
                     article.setSource(context.getString(R.string.lemonde));
 
                     if(article.getImgUrl() != null && !article.getImgUrl().equals("") &&
-                            article.getDescription() != null && !article.getDescription().equals("") && !article.getDescription().equals("\n\n") )
-                    articles.add(article);
-                    /*
-                    Log.e("title", article.getTitle());
-                    Log.e("description", article.getDescription());
-                   // Log.e("pubDate", article.getPubDate());
-                    Log.e("guid", article.getUrl());
-                    Log.e("image url", article.getImgUrl());
-*/
+                            article.getDescription() != null && !article.getDescription().equals("") && !article.getDescription().equals("\n\n") ){
 
+                        articleDAO.add(article);
+                        articles.add(article);
+
+                    }
 
                 }
             }
-            //Log.e("ROOt", data.getDocumentElement().getNodeName());
         }
 
     }
@@ -147,11 +151,16 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
+        articles = articleDAO.getArticleBySource(context.getResources().getString(R.string.lemonde));
+
         articleAdapter.addItemsCollection(articles);
+
+        articleDAO.printTableData();
 
         if(shouldLoad)
         articleAdapter.notifyDataSetChanged();
 
+        articleDAO.close();
         super.onPostExecute(aVoid);
     }
 }
