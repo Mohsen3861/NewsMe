@@ -2,6 +2,7 @@ package com.esgi.newsme.newsme.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,17 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
 
         assignViews(rootView);
-        prepareList();
+
+        swipeContainer.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipeContainer.setRefreshing(true);
+
+                                    prepareList();
+                                }
+                            }
+        );
+
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -76,9 +87,9 @@ public class HomeFragment extends Fragment {
 
         Bundle bundle = getArguments();
         int source = bundle.getInt("source");
-        LemondeRss lemondeRss = new LemondeRss(getActivity(), articleAdapter, true);
-        BfmRss bfmRss = new BfmRss(getActivity(), articleAdapter, true);
-        Rss01net rss01net = new Rss01net(getActivity(), articleAdapter, true);
+        LemondeRss lemondeRss = new LemondeRss(getActivity(), articleAdapter, true, swipeContainer);
+        BfmRss bfmRss = new BfmRss(getActivity(), articleAdapter, true, swipeContainer);
+        Rss01net rss01net = new Rss01net(getActivity(), articleAdapter, true, swipeContainer);
 
         switch (source) {
             case 0:
@@ -92,7 +103,7 @@ public class HomeFragment extends Fragment {
                 break;
             case 3:
 
-                AllRss allRss = new AllRss(articleAdapter, getActivity());
+                AllRss allRss = new AllRss(articleAdapter, getActivity(), swipeContainer);
 
                 allRss.execute();
                 break;
@@ -114,12 +125,8 @@ public class HomeFragment extends Fragment {
         mainNewsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
             }
         });
-
-        swipeContainer.setRefreshing(false);
 
 
     }
@@ -130,6 +137,8 @@ public class HomeFragment extends Fragment {
         ArrayList<Article> favoritArticles = articleDAO.getFavoritArticles();
         articleAdapter.addItemsCollection(favoritArticles);
         articleAdapter.notifyDataSetChanged();
+
+        swipeContainer.setRefreshing(false);
     }
 
 

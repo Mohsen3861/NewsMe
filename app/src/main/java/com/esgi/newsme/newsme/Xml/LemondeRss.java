@@ -3,6 +3,7 @@ package com.esgi.newsme.newsme.Xml;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
@@ -43,13 +44,15 @@ public class LemondeRss extends AsyncTask<Void, Void, Void> {
     Boolean shouldLoad;
 
     ArticleDAO articleDAO;
+    SwipeRefreshLayout loader;
 
-
-    public LemondeRss(Context context , ArticleAdapter adapter , boolean shouldLoad){
+    public LemondeRss(Context context , ArticleAdapter adapter , boolean shouldLoad , SwipeRefreshLayout loader){
         this.context = context;
         articleAdapter = adapter;
         this.shouldLoad = shouldLoad;
+        this.loader = loader;
 
+        //inistialize DB
         articleDAO = new ArticleDAO(context);
         articleDAO.open();
     }
@@ -157,8 +160,10 @@ public class LemondeRss extends AsyncTask<Void, Void, Void> {
 
         articleDAO.printTableData();
 
-        if(shouldLoad)
-        articleAdapter.notifyDataSetChanged();
+        if(shouldLoad) {
+            articleAdapter.notifyDataSetChanged();
+            loader.setRefreshing(false);
+        }
 
         articleDAO.close();
         super.onPostExecute(aVoid);

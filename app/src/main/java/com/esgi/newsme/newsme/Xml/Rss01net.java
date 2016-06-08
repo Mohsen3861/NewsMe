@@ -3,6 +3,7 @@ package com.esgi.newsme.newsme.Xml;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
@@ -42,14 +43,16 @@ public class Rss01net extends AsyncTask<Void, Void, Void> {
     ArrayList<Article> articles = new ArrayList<>();
     ArticleAdapter articleAdapter;
     Boolean shouldLoad;
+    SwipeRefreshLayout loader;
 
     ArticleDAO articleDAO;
 
 
-    public Rss01net(Context context, ArticleAdapter adapter, boolean shouldLoad) {
+    public Rss01net(Context context, ArticleAdapter adapter, boolean shouldLoad , SwipeRefreshLayout loader) {
         this.context = context;
         articleAdapter = adapter;
         this.shouldLoad = shouldLoad;
+        this.loader = loader;
 
         articleDAO = new ArticleDAO(context);
         articleDAO.open();
@@ -166,8 +169,11 @@ public class Rss01net extends AsyncTask<Void, Void, Void> {
 
         articleAdapter.addItemsCollection(articles);
 
-        if (shouldLoad)
+        if (shouldLoad){
+
             articleAdapter.notifyDataSetChanged();
+            loader.setRefreshing(false);
+        }
 
 
         articleDAO.close();
