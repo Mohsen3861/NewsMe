@@ -2,6 +2,7 @@ package com.esgi.newsme.newsme.SQL.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 
@@ -58,6 +59,25 @@ public class UserDAO extends AbstracDAO <User> {
 
     @Override
     public User get(int id) {
-        return null;
+        Cursor cursor = getSqliteDb().query(TABLE_NAME,
+                new String[]{KEY_ID, KEY_NOM, KEY_PRENOM, KEY_EMAIL, KEY_MDP},
+                KEY_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null
+        );
+
+        User user = null;
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+
+        user = new User(cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3));
+        return user;
     }
 }
