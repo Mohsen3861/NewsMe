@@ -6,5 +6,6 @@
 
 
     <color name="colorGray">#535353</color>
+    <color name="login_button">#1cbc37</color>
 
 </resources>

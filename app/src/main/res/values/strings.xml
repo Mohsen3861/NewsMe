@@ -21,6 +21,16 @@
     <string name="BFM">BFM</string>
     <string name="net">01-NET</string>
     <string name="lemonde">Le monde</string>
+    <string name="identifiant">Identifiant</string>
+    <string name="password">Mot de passe</string>
+    <string name="create_acount">Créer un compte</string>
+    <string name="login">Connexion</string>
+    <string name="first_login">Première connexion ?</string>
+    <string name="nom">Nom</string>
+    <string name="prenom">Prénom</string>
+    <string name="Email">Email</string>
+    <string name="conf_password">Confirmation</string>
+    <string name="valider">Valider</string>
 
 
 </resources>
