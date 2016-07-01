@@ -204,9 +204,8 @@ public class ArticleAdapter extends BaseAdapter{
 
         //animation
 
-        Animation animation = AnimationUtils.loadAnimation(context, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.down_from_top);
         convertView.startAnimation(animation);
-        lastPosition = position;
 
         return convertView;
     }

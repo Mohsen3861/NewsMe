@@ -112,12 +112,6 @@ public class HomeFragment extends Fragment {
                 getFavorits();
 
         }
-/*
-
-
-
-
-*/
 
 
         mainNewsList.setAdapter(articleAdapter);
