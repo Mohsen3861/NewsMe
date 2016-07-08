@@ -2,7 +2,6 @@ package com.esgi.newsme.newsme.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.esgi.newsme.newsme.Xml.AllRss;
 import com.esgi.newsme.newsme.Xml.BfmRss;
 import com.esgi.newsme.newsme.Xml.LemondeRss;
 import com.esgi.newsme.newsme.Xml.Rss01net;
+import com.esgi.newsme.newsme.Xml.Rss20mn;
 
 import java.util.ArrayList;
 
@@ -90,6 +90,7 @@ public class HomeFragment extends Fragment {
         LemondeRss lemondeRss = new LemondeRss(getActivity(), articleAdapter, true, swipeContainer);
         BfmRss bfmRss = new BfmRss(getActivity(), articleAdapter, true, swipeContainer);
         Rss01net rss01net = new Rss01net(getActivity(), articleAdapter, true, swipeContainer);
+        Rss20mn rss20mn = new Rss20mn(getActivity(), articleAdapter, true, swipeContainer);
 
         switch (source) {
             case 0:
@@ -102,14 +103,20 @@ public class HomeFragment extends Fragment {
                 rss01net.execute();
                 break;
             case 3:
+                rss20mn.execute();
+                break;
+
+            case 4:
+
 
                 AllRss allRss = new AllRss(articleAdapter, getActivity(), swipeContainer);
 
                 allRss.execute();
                 break;
 
-            case 4:
+            case 5:
                 getFavorits();
+
 
         }
 

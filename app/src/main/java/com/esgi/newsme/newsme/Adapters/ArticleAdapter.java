@@ -126,6 +126,10 @@ public class ArticleAdapter extends BaseAdapter{
             case "01-NET":
                 holder.sourceImage.setImageResource(R.drawable.ic_01net_logo);
                 break;
+            
+            case "20 minutes":
+                holder.sourceImage.setImageResource(R.drawable.logo20);
+                break;
         }
 
         final Article currentArticle = mData.get(position);

@@ -27,10 +27,12 @@ public class AllRss extends AsyncTask<Void,Void,Void> {
         BfmRss   bfmRss = new BfmRss(context,articleAdapter , false , loader);
         Rss01net rss01net = new Rss01net(context,articleAdapter , false, loader);
         LemondeRss lemondeRss = new LemondeRss(context,articleAdapter , false,loader);
+        Rss20mn rss20mn = new Rss20mn(context,articleAdapter,false,loader);
 
         bfmRss.execute();
         rss01net.execute();
         lemondeRss.execute();
+        rss20mn.execute();
 
         super.onPreExecute();
     }

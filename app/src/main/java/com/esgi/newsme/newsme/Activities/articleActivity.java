@@ -78,10 +78,12 @@ public class articleActivity extends AppCompatActivity {
                 break;
             case "Le monde":
                 sourceImage.setImageResource(R.drawable.ic_lemond);
-
                 break;
             case "01-NET":
                 sourceImage.setImageResource(R.drawable.ic_01net_logo);
+                break;
+            case "20-Minuites":
+                sourceImage.setImageResource(R.mipmap.ic_20minutes_logo);
                 break;
         }
 

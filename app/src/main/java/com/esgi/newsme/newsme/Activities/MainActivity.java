@@ -100,10 +100,24 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.frame_container, home).commit();
 
             setTitle(R.string.net);
-        }else if(id == R.id.nav_all){
+
+        }else if(id == R.id.nav_20mn){
+
             HomeFragment home = new HomeFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("source" , 3);
+            home.setArguments(bundle);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
+
+            setTitle(R.string.minuite);
+
+        }else if(id == R.id.nav_all){
+            HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 4);
             home.setArguments(bundle);
 
             FragmentManager fragmentManager = getFragmentManager();
@@ -115,7 +129,7 @@ public class MainActivity extends AppCompatActivity
         }else if(id == R.id.nav_favorit){
             HomeFragment home = new HomeFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("source" , 4);
+            bundle.putInt("source" , 5);
             home.setArguments(bundle);
 
             FragmentManager fragmentManager = getFragmentManager();
