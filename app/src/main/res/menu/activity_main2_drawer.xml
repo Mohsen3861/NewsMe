@@ -19,6 +19,11 @@
                 android:title="01 NET" />
 
             <item
+                android:id="@+id/nav_20mn"
+                android:icon="@drawable/ic_20min"
+                android:title="20minutes" />
+
+            <item
                 android:id="@+id/nav_all"
                 android:icon="@drawable/arrow_compress_all"
                 android:title="tous" />

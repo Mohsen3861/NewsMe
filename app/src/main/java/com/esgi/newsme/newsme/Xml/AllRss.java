@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -48,10 +49,12 @@ int numberOfArticlesBefore;
         BfmRss bfmRss = new BfmRss(context, articleAdapter, false, loader);
         Rss01net rss01net = new Rss01net(context, articleAdapter, false, loader);
         LemondeRss lemondeRss = new LemondeRss(context, articleAdapter, false, loader);
+        Rss20mn rss20mn = new Rss20mn(context,articleAdapter,false,loader);
 
         bfmRss.execute();
         rss01net.execute();
         lemondeRss.execute();
+        rss20mn.execute();
 
         super.onPreExecute();
     }
@@ -65,9 +68,6 @@ int numberOfArticlesBefore;
 
     @Override
     protected void onPostExecute(Void aVoid) {
-
-
-
 
         if (articleAdapter != null && loader != null) {
             articleAdapter.notifyDataSetChanged();
@@ -89,6 +89,12 @@ int numberOfArticlesBefore;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void createNotification(int count) {
+        SharedPreferences prefs = context.getSharedPreferences("ARTICLES", context.MODE_PRIVATE);
+        count += prefs.getInt("unreads",0);
+
+        SharedPreferences.Editor editor = context.getSharedPreferences("ARTICLES", context.MODE_PRIVATE).edit();
+        editor.putInt("unreads", count);
+        editor.apply();
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);

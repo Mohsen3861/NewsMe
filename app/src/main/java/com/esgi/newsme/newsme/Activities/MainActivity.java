@@ -36,6 +36,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //mettre à 0 le nombre d'artciles non lus
+        SharedPreferences.Editor editor = getSharedPreferences("ARTICLES", MODE_PRIVATE).edit();
+        editor.putInt("unreads", 0);
+        editor.commit();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null){
             HomeFragment home = new HomeFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("source" , 0);
+            bundle.putInt("source" , 4);
             home.setArguments(bundle);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
@@ -123,10 +128,24 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.frame_container, home).commit();
 
             setTitle(R.string.net);
-        }else if(id == R.id.nav_all){
+
+        }else if(id == R.id.nav_20mn){
+
             HomeFragment home = new HomeFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("source" , 3);
+            home.setArguments(bundle);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, home).commit();
+
+            setTitle(R.string.minuite);
+
+        }else if(id == R.id.nav_all){
+            HomeFragment home = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("source" , 4);
             home.setArguments(bundle);
 
             FragmentManager fragmentManager = getFragmentManager();
@@ -138,7 +157,7 @@ public class MainActivity extends AppCompatActivity
         }else if(id == R.id.nav_favorit){
             HomeFragment home = new HomeFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("source" , 4);
+            bundle.putInt("source" , 5);
             home.setArguments(bundle);
 
             FragmentManager fragmentManager = getFragmentManager();
@@ -174,7 +193,6 @@ public class MainActivity extends AppCompatActivity
             manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             int interval = Constants.BACKGROUND_REFRESH_PERIOD;
             manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-            Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 
             SharedPreferences.Editor editor = getSharedPreferences("ALARM", MODE_PRIVATE).edit();
             editor.putBoolean("alarm", true);

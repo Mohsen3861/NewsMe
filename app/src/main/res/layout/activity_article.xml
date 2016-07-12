@@ -22,7 +22,6 @@
             android:layout_weight="0.6"
             android:background="@android:color/holo_purple"
             android:orientation="horizontal"
-            android:src="@drawable/image_test"
             android:scaleType="centerCrop" />
         <LinearLayout
             android:id="@+id/viewC"

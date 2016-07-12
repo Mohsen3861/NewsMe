@@ -17,9 +17,11 @@
     <string name="url_01net">http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/</string>
     <string name="url_lemonde">http://www.lemonde.fr/rss/une.xml</string>
     <string name="url_bfm">http://www.bfmtv.com/rss/info/flux-rss/flux-toutes-les-actualites/</string>
+    <string name="url_20mn">http://www.20minutes.fr/rss/flux/une.xml?xts=290428-xtor=RSS-1</string>
 
     <string name="BFM">BFM</string>
     <string name="net">01-NET</string>
+    <string name="minuite">20-MINUTES</string>
     <string name="lemonde">Le monde</string>
     <string name="identifiant">Identifiant</string>
     <string name="password">Mot de passe</string>
