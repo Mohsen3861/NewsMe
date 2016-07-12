@@ -33,4 +33,7 @@ public abstract class AbstracDAO <T>{
 
     public abstract void add(T object);
     public abstract T get(int id);
+    public abstract T getUser(String email,String pass);
+    public abstract int getCount();
+
 }

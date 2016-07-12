@@ -84,7 +84,7 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
                         Node current = itemChilds.item(j);
                         //Log.e("ROOt", "BFMTV : " + currentChild.getNodeName().equalsIgnoreCase("enclosure"));
                         if (current.getNodeName().equalsIgnoreCase("title")){
-                            article.setTitle(current.getTextContent().trim());
+                            article.setTitle(StringUtils.html2text(current.getTextContent()));
 
                         }else if (current.getNodeName().equalsIgnoreCase("description")){
                                 article.setDescription(StringUtils.html2text(current.getTextContent()));
@@ -166,12 +166,16 @@ public class BfmRss extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         articles = articleDAO.getArticleBySource(context.getResources().getString(R.string.BFM));
 
-        articleAdapter.addItemsCollection(articles);
+        if(articleAdapter!=null) {
+            articleAdapter.addItemsCollection(articles);
 
+            if (shouldLoad) {
 
-        if(shouldLoad) {
-            articleAdapter.notifyDataSetChanged();
-            loader.setRefreshing(false);
+                articleAdapter.notifyDataSetChanged();
+
+                if (loader != null)
+                    loader.setRefreshing(false);
+            }
         }
 
         articleDAO.close();

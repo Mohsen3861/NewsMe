@@ -34,6 +34,13 @@
             android:name=".Activities.LoginActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activities.InscriptionActivity"></activity>
+
+        <receiver android:name=".recievers.NewsReciever">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

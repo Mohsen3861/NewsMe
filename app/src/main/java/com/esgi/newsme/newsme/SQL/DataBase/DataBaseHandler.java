@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.esgi.newsme.newsme.SQL.DAO.ArticleDAO;
+import com.esgi.newsme.newsme.SQL.DAO.UserDAO;
 
 /**
  * Created by Promobile on 01/06/2016.
@@ -21,6 +22,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(ArticleDAO.CREATE_TABLE);
+        db.execSQL(UserDAO.CREATE_TABLE);
     }
 
     @Override

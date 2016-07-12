@@ -12,8 +12,10 @@ import android.widget.ListView;
 
 import com.esgi.newsme.newsme.Adapters.ArticleAdapter;
 import com.esgi.newsme.newsme.Models.Article;
+import com.esgi.newsme.newsme.Models.User;
 import com.esgi.newsme.newsme.R;
 import com.esgi.newsme.newsme.SQL.DAO.ArticleDAO;
+import com.esgi.newsme.newsme.Utils.UserUtils;
 import com.esgi.newsme.newsme.Xml.AllRss;
 import com.esgi.newsme.newsme.Xml.BfmRss;
 import com.esgi.newsme.newsme.Xml.LemondeRss;
@@ -128,7 +130,13 @@ public class HomeFragment extends Fragment {
     public void getFavorits() {
         ArticleDAO articleDAO = new ArticleDAO(getActivity());
         articleDAO.open();
-        ArrayList<Article> favoritArticles = articleDAO.getFavoritArticles();
+
+        User user = UserUtils.getUserInfo(getActivity());
+
+        ArrayList<Article> favoritArticles = new ArrayList<>();
+        if (user != null) {
+            favoritArticles = articleDAO.getFavoritArticles(user.getId());
+        }
         articleAdapter.addItemsCollection(favoritArticles);
         articleAdapter.notifyDataSetChanged();
 

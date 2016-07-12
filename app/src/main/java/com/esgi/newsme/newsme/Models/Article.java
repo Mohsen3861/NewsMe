@@ -19,6 +19,7 @@ public class Article implements Serializable ,Comparable<Article>{
     private String id;
     private String imgUrl;
     private Bitmap image;
+    private String userId;
 
     private boolean saved;
 
@@ -48,6 +49,14 @@ public class Article implements Serializable ,Comparable<Article>{
         this.imgUrl = imgUrl;
         this.image = image;
         this.saved = saved;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getId() {

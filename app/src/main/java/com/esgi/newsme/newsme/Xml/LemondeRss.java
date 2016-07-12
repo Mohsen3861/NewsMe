@@ -156,15 +156,17 @@ public class LemondeRss extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         articles = articleDAO.getArticleBySource(context.getResources().getString(R.string.lemonde));
 
-        articleAdapter.addItemsCollection(articles);
+        if(articleAdapter!=null) {
+            articleAdapter.addItemsCollection(articles);
 
-        articleDAO.printTableData();
+            if (shouldLoad) {
 
-        if(shouldLoad) {
-            articleAdapter.notifyDataSetChanged();
-            loader.setRefreshing(false);
+                articleAdapter.notifyDataSetChanged();
+
+                if (loader != null)
+                    loader.setRefreshing(false);
+            }
         }
-
         articleDAO.close();
         super.onPostExecute(aVoid);
     }

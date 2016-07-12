@@ -31,6 +31,10 @@
     <string name="Email">Email</string>
     <string name="conf_password">Confirmation</string>
     <string name="valider">Valider</string>
+    <string name="field_empty_error">Veillez remplir tous les champs</string>
+    <string name="password_error">les champs mot de passe et confirmation ne correspondent pas</string>
+    <string name="bad_login_error">Votre identifiant ou mot passe est incorrect! Veuillez recommencer.</string>
+    <string name="email_used">Cette adresse email est déjà utilisée !</string>
 
 
 </resources>

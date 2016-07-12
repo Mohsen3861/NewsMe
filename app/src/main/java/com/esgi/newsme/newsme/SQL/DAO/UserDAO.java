@@ -28,10 +28,10 @@ public class UserDAO extends AbstracDAO <User> {
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME + " ("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_NOM + " TEXT UNIQUE, "
-            + KEY_PRENOM + " TEXT UNIQUE, "
+            + KEY_NOM + " TEXT , "
+            + KEY_PRENOM + " TEXT , "
             + KEY_EMAIL + " TEXT UNIQUE, "
-            + KEY_MDP + " TEXT UNIQUE);";
+            + KEY_MDP + " TEXT );";
 
 
 
@@ -52,17 +52,21 @@ public class UserDAO extends AbstracDAO <User> {
             getSqliteDb().insert(TABLE_NAME, null, contentValues);
         }catch (SQLException e) {
             Log.e("SQL UNIQUE", "ALREADY SAVED IN DATABASE");
-
         }
 
     }
 
     @Override
     public User get(int id) {
+        return null;
+    }
+
+    @Override
+    public User getUser(String email,String pass) {
         Cursor cursor = getSqliteDb().query(TABLE_NAME,
                 new String[]{KEY_ID, KEY_NOM, KEY_PRENOM, KEY_EMAIL, KEY_MDP},
-                KEY_ID + "=?",
-                new String[]{String.valueOf(id)},
+                KEY_EMAIL + "=? AND " + KEY_MDP +"=? ",
+                new String[]{email,pass},
                 null,
                 null,
                 null,
@@ -72,12 +76,25 @@ public class UserDAO extends AbstracDAO <User> {
         User user = null;
         if (cursor != null){
             cursor.moveToFirst();
-        }
-
-        user = new User(cursor.getString(0),
+            if( cursor.getCount() > 0) {
+                user = new User(cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        cursor.getString(3));
+                        cursor.getString(3),
+                        cursor.getString(4));
+            }
+        }
+
+
+
+        if( user!=null && !user.getEmail().isEmpty())
         return user;
+        else
+            return null;
+    }
+
+    @Override
+    public int getCount() {
+        return 0;
     }
 }

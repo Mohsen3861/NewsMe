@@ -167,14 +167,17 @@ public class Rss01net extends AsyncTask<Void, Void, Void> {
 
         articles = articleDAO.getArticleBySource(context.getResources().getString(R.string.net));
 
-        articleAdapter.addItemsCollection(articles);
+        if(articleAdapter!=null) {
+            articleAdapter.addItemsCollection(articles);
 
-        if (shouldLoad){
+            if (shouldLoad) {
 
-            articleAdapter.notifyDataSetChanged();
-            loader.setRefreshing(false);
+                articleAdapter.notifyDataSetChanged();
+
+                if (loader != null)
+                    loader.setRefreshing(false);
+            }
         }
-
 
         articleDAO.close();
 

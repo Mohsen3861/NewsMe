@@ -1,7 +1,11 @@
 package com.esgi.newsme.newsme.Activities;
 
+import android.app.AlarmManager;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,9 +15,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.esgi.newsme.newsme.Commun.Constants;
 import com.esgi.newsme.newsme.Fragments.HomeFragment;
+import com.esgi.newsme.newsme.Models.User;
 import com.esgi.newsme.newsme.R;
+import com.esgi.newsme.newsme.Utils.UserUtils;
+import com.esgi.newsme.newsme.recievers.NewsReciever;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +37,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -33,6 +45,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         if(savedInstanceState == null){
             HomeFragment home = new HomeFragment();
@@ -44,6 +57,16 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.frame_container, home).commit();
         }
 
+        User user = UserUtils.getUserInfo(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView username = (TextView) headerView.findViewById(R.id.nav_header_text);
+        if(user !=null) {
+            username.setText(user.getPrenom() + " " + user.getNom());
+        }
+
+
+        initService();
     }
 
     @Override
@@ -132,5 +155,31 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void initService(){
+        SharedPreferences prefs = getSharedPreferences("ALARM",MODE_PRIVATE);
+
+        boolean isSet = prefs.getBoolean("alarm",false);
+        if(!isSet) {
+            PendingIntent pendingIntent;
+            Intent alarmIntent = new Intent(MainActivity.this, NewsReciever.class);
+            pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
+
+            //clearing
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            manager.cancel(pendingIntent);
+
+            //setting
+            manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            int interval = Constants.BACKGROUND_REFRESH_PERIOD;
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+            Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences.Editor editor = getSharedPreferences("ALARM", MODE_PRIVATE).edit();
+            editor.putBoolean("alarm", true);
+            editor.commit();
+        }
+
     }
 }
